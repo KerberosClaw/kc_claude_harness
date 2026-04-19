@@ -43,7 +43,7 @@ kc_claude_harness/
 
 零執行檔。真的在動的 code 都在另外那 4 個 repo 裡。
 
-## 安裝（還沒有）
+## 安裝（TODO）
 
 ```bash
 # 某一天
@@ -61,12 +61,17 @@ cd ~/dev/kc_claude_harness && ./install.sh
 
 ## 狀態
 
-**2026-04-20** — Private、Skeleton、scratchpad。
+**2026-04-20** — Public，但大部分還是 markdown 裡的願景。提早放出來是為了證明我還活著，不是因為這東西可以給別人用了。
 
-公開的條件：
-- `kc_pm_sync` 的 MVP（`/pm-sync sprint`）能對 Azure DevOps 拉資料而不哭出來
-- `install.sh` 在全新機器上測過（意思是全新 macOS，因為我只有這個）
-- 中英文 README 對齊（這條 2026-04-20 完成了 — 你現在在讀的就是）
+什麼能動什麼還不行：
+- ✅ [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) 裡的 skills + hooks 是真的，而且我每天在用
+- ✅ `ref/` 當基礎的 progressive disclosure 模式也在日常運作中
+- 🚧 `kc_pm_sync` 有骨架跟 roadmap，`/pm-sync sprint` MVP 是下一個要出的
+- ❌ `install.sh` 不存在。現在想複製這套的話只能手動複製貼上
+
+簡單說：看完宣言、順手偷幾個點子，但不要期待現成可用的配置包
+
+> **更新頻率：** 富奸式佛系更新，請斟酌服用。
 
 ## License
 

@@ -43,7 +43,7 @@ kc_claude_harness/
 
 Zero executables. All the working code lives in the other four repos.
 
-## Install (not yet)
+## Install (TODO)
 
 ```bash
 # some day
@@ -61,12 +61,17 @@ That's the plan. It'll happen after `pm-sync` actually works.
 
 ## Status
 
-**2026-04-20** — Private. Skeleton. Scratchpad.
+**2026-04-20** — Public, but still mostly vision-in-markdown. Making it public early so people know I'm alive, not because it's ready for anyone to use.
 
-Goes public when:
-- `kc_pm_sync` MVP (`/pm-sync sprint`) can pull from Azure DevOps without crying
-- `install.sh` survives a fresh-machine test (read: a fresh macOS install, because that's all I have)
-- Chinese README matches English (this one's done — see `README_zh.md`)
+What's working vs what isn't:
+- ✅ The pieces in [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) (skills + hooks) are real and I use them daily
+- ✅ The `ref/`-based progressive disclosure pattern is in daily use
+- 🚧 `kc_pm_sync` has a skeleton and a roadmap; `/pm-sync sprint` MVP is the next thing I ship
+- ❌ `install.sh` doesn't exist. If you want to replicate this, you're copy-pasting by hand for now.
+
+In other words: read the manifesto, steal whatever ideas help, but don't expect a turnkey setup yet.
+
+> **Update cadence:** Togashi-style. Please enjoy responsibly.
 
 ## License
 
