@@ -14,10 +14,10 @@ Rather than a single tool, this repo is a **meta-project** documenting and packa
 
 | Piece | Where | Purpose |
 |---|---|---|
-| [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | separate repo | 12+ skills: `/spec`, `/memory-lint`, `/repo-scan`, `/skill-cron`, etc. Plus 4 safety hooks. |
-| kc_claude_memory | private | Auto-memory directory with triggers + 12 agent `ref/` files |
+| [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | separate repo (public) | 12+ skills: `/spec`, `/memory-lint`, `/repo-scan`, `/skill-cron`, etc. Plus 4 safety hooks. |
+| kc_claude_memory | separate repo (private) | Auto-memory directory with triggers + 12 agent `ref/` files |
 | [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | Source of the 12 agent reference files (MIT, attributed) |
-| kc_pm_sync | planned | Future: bidirectional sync between spec skill output and PM tools (Linear/Jira) |
+| kc_pm_sync | separate repo (private, skeleton) | Azure DevOps-first sync between `specs/<name>/tasks.md` and PM work items. MVP: `/pm-sync sprint` (pull read-only). |
 
 ---
 
@@ -68,7 +68,7 @@ cd ~/dev/kc_claude_harness && ./install.sh
 ## Status
 
 **2026-04-20** — Private skeleton. Using as a scratchpad while pieces stabilize. Will go public when:
-- `kc_pm_sync` lands a working v1
+- `kc_pm_sync` MVP (`/pm-sync sprint`) actually works against Azure DevOps
 - `install.sh` is tested on a fresh machine
 - Bilingual README (EN + 中文)
 
