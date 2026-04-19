@@ -1,79 +1,73 @@
 # kc_claude_harness
 
-> Personal harness for driving Claude Code — skills, hooks, memory patterns, and PM integration, wired together under one roof.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**English · 繁體中文 (TODO)**
+[正體中文](README_zh.md)
 
----
+> Personal duct tape holding together the skills, hooks, memory, and PM glue that turn Claude Code into something that actually ships code.
 
-## What is this?
+Not a tool. A manifesto plus some dotfiles. If you're hoping for a `brew install` situation, this isn't it.
 
-An opinionated setup for using Claude Code as a coding agent, organized around the **harness engineering** pattern: engineers don't write code, they design the environment the agent operates in — tools, feedback loops, memory structure, and constraints.
+## What actually lives here
 
-Rather than a single tool, this repo is a **meta-project** documenting and packaging the pieces that work together:
+This repo is the **connective tissue** — docs, credits, and (eventually) an install script that ties together the pieces living in other repos. Nothing here executes. Think of it as the README for a system that spans four repos.
 
-| Piece | Where | Purpose |
+| Piece | Where | What it does |
 |---|---|---|
-| [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | separate repo (public) | 12+ skills: `/spec`, `/memory-lint`, `/repo-scan`, `/skill-cron`, etc. Plus 4 safety hooks. |
-| kc_claude_memory | separate repo (private) | Auto-memory directory with triggers + 12 agent `ref/` files |
-| [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | Source of the 12 agent reference files (MIT, attributed) |
-| kc_pm_sync | separate repo (private, skeleton) | Azure DevOps-first sync between `specs/<name>/tasks.md` and PM work items. MVP: `/pm-sync sprint` (pull read-only). |
-
----
+| [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | separate repo (public) | 12+ skills (`/spec`, `/memory-lint`, `/repo-scan`, `/skill-cron`, ...) plus 4 safety hooks. The part that actually runs. |
+| kc_claude_memory | separate repo (private) | Where Claude keeps notes about me. Also holds `ref/` files — 12 agent system prompts borrowed from NYCU, loaded on demand. |
+| [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | Where those agent prompts came from. MIT, credited in CREDITS.md. |
+| kc_pm_sync | separate repo (private, skeleton) | Bridge between `specs/<name>/tasks.md` and Azure DevOps work items. MVP target: `/pm-sync sprint`. Currently: directory structure and good intentions. |
 
 ## Why "harness"?
 
-Term borrowed from OpenAI's [Harness Engineering](https://openai.com/index/harness-engineering/) article (Feb 2026). Key ideas applied here:
+Stolen from OpenAI's [harness engineering](https://openai.com/index/harness-engineering/) article (Feb 2026). The argument: engineers shouldn't be writing code anymore — they should be building the environment the agent writes code in. Tools, feedback loops, memory layout, invariants. The agent does the typing.
 
-1. **Give agents a map, not a manual.** Short `MEMORY.md` as an index; detail lives in `ref/` files accessed on demand (progressive disclosure).
-2. **Codebase as single source of truth.** Spec-driven development via `/spec` skill — every feature produces `spec.md` / `plan.md` / `tasks.md` / `report.md` in the repo, not in someone's head.
-3. **Enforce invariants, not implementations.** Hooks catch common failures (committed secrets, force-push to main, reading huge files) deterministically, with fix instructions baked into the error message.
-4. **Progressive trust.** Agents can run autonomously in well-scoped loops (skill-cron for scheduled tasks, spec's Implement Stage for bounded work).
+That article hit embarrassingly close to home because it described what I'd been doing for weeks without a name for it. The parts that stuck:
 
----
+1. **Give agents a map, not a 1000-page manual.** A bloated `CLAUDE.md` crowds out the task. A 100-line `MEMORY.md` as an index pointing at `ref/` files you load on demand — that actually works.
+2. **Codebase is the only thing the agent can read.** Slack threads don't exist to it. Google Doc decisions don't exist. If it's not in the repo, it didn't happen. So `/spec` writes everything — requirements, plans, tasks, reports — to `specs/`.
+3. **Encode rules as hooks, not requests.** "Please don't commit secrets" is wishful thinking. A hook that greps the staged diff for `sk-*` and `exit 2`s is a load-bearing wall.
+4. **Let the agent loop where it's safe.** `skill-cron` runs banini every day. `/spec`'s Implement Stage runs until tasks are done. Not full autopilot. Not a puppet either.
 
-## Structure
+## What's in this repo
 
 ```
 kc_claude_harness/
-├── README.md        — this file (vision + pointers)
-├── CREDITS.md       — lineage: NYCU devteam, OpenAI, Karpathy, tanweai/pua
-├── LICENSE          — MIT
+├── README.md         — you are here
+├── CREDITS.md        — who to credit / who to blame
+├── LICENSE           — MIT
 └── docs/
-    └── architecture.md  — deep dive (TODO)
+    └── architecture.md   — the deep-dive (TODO, still skeletal)
 ```
 
-This repo is deliberately minimal. The executable pieces live in their own repos (see table above). Here is the connective tissue: vision, design notes, install/update scripts (future), and credit.
+Zero executables. All the working code lives in the other four repos.
 
----
-
-## Installation (future)
-
-Not yet. Currently this is a living document. When stable:
+## Install (not yet)
 
 ```bash
-# planned
+# some day
 git clone https://github.com/KerberosClaw/kc_claude_harness ~/dev/kc_claude_harness
 cd ~/dev/kc_claude_harness && ./install.sh
 ```
 
-`install.sh` will (when written):
-- Clone kc_ai_skills into `~/dev/`
+When `install.sh` exists, it'll:
+- Clone `kc_ai_skills` into `~/dev/`
 - Symlink skills + hooks into `~/.claude/`
-- Set up `~/.claude/branch-protection-skip.txt` template
-- Bootstrap `~/dev/kc_claude_memory/` with the MEMORY.md template
+- Seed `~/.claude/branch-protection-skip.txt` (so the hook doesn't block you on your own solo repos)
+- Bootstrap `~/dev/kc_claude_memory/` with a minimal MEMORY.md
 
----
+That's the plan. It'll happen after `pm-sync` actually works.
 
 ## Status
 
-**2026-04-20** — Private skeleton. Using as a scratchpad while pieces stabilize. Will go public when:
-- `kc_pm_sync` MVP (`/pm-sync sprint`) actually works against Azure DevOps
-- `install.sh` is tested on a fresh machine
-- Bilingual README (EN + 中文)
+**2026-04-20** — Private. Skeleton. Scratchpad.
 
----
+Goes public when:
+- `kc_pm_sync` MVP (`/pm-sync sprint`) can pull from Azure DevOps without crying
+- `install.sh` survives a fresh-machine test (read: a fresh macOS install, because that's all I have)
+- Chinese README matches English (this one's done — see `README_zh.md`)
 
 ## License
 
-MIT. See [CREDITS.md](CREDITS.md) for third-party attributions.
+MIT. See [CREDITS.md](CREDITS.md) for everyone else who had a hand in this.
