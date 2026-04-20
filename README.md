@@ -17,7 +17,7 @@ This repo is the **connective tissue** — docs, credits, and (eventually) an in
 | [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | separate repo (public) | 12+ skills (`/spec`, `/memory-lint`, `/repo-scan`, `/skill-cron`, ...) plus 4 safety hooks. The part that actually runs. |
 | kc_claude_memory | separate repo (private) | Where Claude keeps notes about me. Also holds `ref/` files — 12 agent system prompts borrowed from NYCU, loaded on demand. |
 | [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | Where those agent prompts came from. MIT, credited in CREDITS.md. |
-| kc_pm_sync | separate repo (private, skeleton) | Bridge between `specs/<name>/tasks.md` and Azure DevOps work items. MVP target: `/pm-sync sprint`. Currently: directory structure and good intentions. |
+| [kc_pm_sync](https://github.com/KerberosClaw/kc_pm_sync) | separate repo (public, skeleton) | Bridge between `specs/<name>/tasks.md` and Azure DevOps work items. MVP target: `/pm-sync sprint`. Currently: directory structure and good intentions. |
 
 ## Why "harness"?
 

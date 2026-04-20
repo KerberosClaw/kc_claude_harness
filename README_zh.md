@@ -17,7 +17,7 @@
 | [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | 獨立 repo（public） | 12+ 個 skill（`/spec`、`/memory-lint`、`/repo-scan`、`/skill-cron` 等）加 4 個安全 hook。真的能執行的部分都在這。 |
 | kc_claude_memory | 獨立 repo（private） | Claude 寫給自己看的筆記都在這。還有 `ref/` 檔 — 12 份從 NYCU 抄來的 agent system prompt，用到才載入。 |
 | [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | 上面那些 agent prompt 的來源。MIT 授權，CREDITS.md 有記功。 |
-| kc_pm_sync | 獨立 repo（private, skeleton） | `specs/<name>/tasks.md` 跟 Azure DevOps work item 之間的橋。MVP 目標：`/pm-sync sprint`。現在只有目錄結構跟良好的意圖。 |
+| [kc_pm_sync](https://github.com/KerberosClaw/kc_pm_sync) | 獨立 repo（public, skeleton） | `specs/<name>/tasks.md` 跟 Azure DevOps work item 之間的橋。MVP 目標：`/pm-sync sprint`。現在只有目錄結構跟良好的意圖。 |
 
 ## 為什麼叫 harness？
 
