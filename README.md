@@ -1,6 +1,7 @@
-# kc_claude_harness
+# Claude Harness — The Meta-Repo Behind My Claude Code Setup
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/Docs-only-blue.svg)](docs/)
 
 [正體中文](README_zh.md)
 
@@ -72,6 +73,13 @@ What's working vs what isn't:
 In other words: read the manifesto, steal whatever ideas help, but don't expect a turnkey setup yet.
 
 > **Update cadence:** Togashi-style. Please enjoy responsibly.
+
+## Security Notice
+
+- **This repo is documentation + metadata only.** No executable code, no secrets, no credentials. Clone it, fork it, read it — nothing sensitive transfers.
+- **The sibling repos** ([kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills), `kc_pm_sync`, `kc_claude_memory`) each have their own Security Notice covering PAT storage, hook behaviour, sanitization rules for test fixtures, etc. Read those before wiring anything into a real workflow.
+- **Future `install.sh`** (when it exists) will never hard-code credentials — all tokens go through env vars or adapter-level `from_env()` classmethods. Same pattern as pm-sync.
+- **Found a real security issue?** Open a GitHub issue on the relevant sub-repo (pm-sync for PAT flow, ai_skills for hook bugs, etc.). Nothing in this meta-repo itself should ever warrant a CVE.
 
 ## License
 

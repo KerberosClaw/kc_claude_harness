@@ -1,6 +1,7 @@
-# kc_claude_harness
+# Claude Harness — 我 Claude Code 設定背後的 meta-repo
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/Docs-only-blue.svg)](docs/)
 
 [English](README.md)
 
@@ -72,6 +73,13 @@ cd ~/dev/kc_claude_harness && ./install.sh
 簡單說：看完宣言、順手偷幾個點子，但不要期待現成可用的配置包
 
 > **更新頻率：** 富奸式佛系更新，請斟酌服用。
+
+## Security Notice
+
+- **這個 repo 只有文件 + metadata。** 沒有可執行程式、沒有密鑰、沒有憑證。Clone 走、fork 走、讀就好，沒敏感東西會跟著跑掉。
+- **姐妹 repo**（[kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills)、`kc_pm_sync`、`kc_claude_memory`）各自有自己的 Security Notice 講 PAT 怎麼存、hook 做什麼、測試 fixture 的去敏規範等。把任何一塊接進你真實工作流前先看那幾份。
+- **未來的 `install.sh`**（哪天真寫出來）絕不會 hard-code 憑證 — 所有 token 走 env var 或 adapter 層的 `from_env()` classmethod。跟 pm-sync 同模式。
+- **找到真正的資安問題？** 到對應子 repo 開 GitHub issue（PAT 流程問題去 pm-sync、hook bug 去 ai_skills）。這個 meta-repo 本身沒東西會觸發 CVE。
 
 ## License
 
