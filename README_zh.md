@@ -18,7 +18,7 @@
 | [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | 獨立 repo（public） | 12+ 個 skill（`/spec`、`/memory-lint`、`/repo-scan`、`/skill-cron` 等）加 4 個安全 hook。真的能執行的部分都在這。 |
 | kc_claude_memory | 獨立 repo（private） | Claude 寫給自己看的筆記都在這。還有 `ref/` 檔 — 12 份從 NYCU 抄來的 agent system prompt，用到才載入。 |
 | [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | 上面那些 agent prompt 的來源。MIT 授權，CREDITS.md 有記功。 |
-| [kc_pm_sync](https://github.com/KerberosClaw/kc_pm_sync) | 獨立 repo（public, v1.0.1 stable） | Pure prompt-driven Claude Code skill：PRD markdown → Azure DevOps work items。Workflow A 拆 PRD 成 vertical slices（quiz-user）；Workflow B 推上 ADO 含 parent / Predecessor / assignee + idempotent fingerprint markers。 |
+| [kc_pm_kit](https://github.com/KerberosClaw/kc_pm_kit) | 獨立 repo（public） | 兩個 chain 起來的 prompt-driven Claude Code skill：`prd-create`（raw input → PRD draft → ADO Wiki，v0.1 mvp）+ `prd-breakdown`（PRD → vertical slices → ADO work items 含 parent / Predecessor / assignee + idempotent fingerprint markers，v1.1 stable）。 |
 
 ## 為什麼叫 harness？
 
@@ -58,7 +58,7 @@ cd ~/dev/kc_claude_harness && ./install.sh
 - 初始化 `~/.claude/branch-protection-skip.txt`（不然 hook 會擋你自己個人 repo 的 direct-to-main）
 - Bootstrap `~/dev/kc_claude_memory/` 跟一份最小的 MEMORY.md
 
-計畫是這樣。pm-sync v1.0 已 ship（2026-04），install.sh 下一個。
+計畫是這樣。prd-breakdown v1.1 已 ship（2026-04），install.sh 下一個。
 
 ## 狀態
 
@@ -67,9 +67,8 @@ cd ~/dev/kc_claude_harness && ./install.sh
 什麼能動什麼還不行：
 - ✅ [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) 裡的 skills + hooks 是真的，而且我每天在用
 - ✅ `ref/` 當基礎的 progressive disclosure 模式也在日常運作中
-- ✅ `kc_pm_sync` v1.0.1 stable — PRD breakdown + ADO push 在 production 用
-- 🚧 `/prd-create` skill（spec/design → PRD markdown）— 規劃中，還沒動
-- 🚧 `/pm-sync daily` workflow（snapshot diff for standup）— 規劃中
+- ✅ `kc_pm_kit` 兩個 skill 都 ship 了：`/prd-breakdown` v1.1 stable（PRD → ADO work items）+ `/prd-create` v0.1 mvp（raw input → PRD draft → ADO Wiki）— 都在 production 用
+- 🚧 `/prd-breakdown daily` workflow（snapshot diff for standup）— 規劃中
 - ❌ `install.sh` 不存在。現在想複製這套的話只能手動複製貼上
 
 簡單說：看完宣言、順手偷幾個點子，但不要期待現成可用的配置包
@@ -79,9 +78,9 @@ cd ~/dev/kc_claude_harness && ./install.sh
 ## Security Notice
 
 - **這個 repo 只有文件 + metadata。** 沒有可執行程式、沒有密鑰、沒有憑證。Clone 走、fork 走、讀就好，沒敏感東西會跟著跑掉。
-- **姐妹 repo**（[kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills)、`kc_pm_sync`、`kc_claude_memory`）各自有自己的 Security Notice 講 PAT 怎麼存、hook 做什麼、測試 fixture 的去敏規範等。把任何一塊接進你真實工作流前先看那幾份。
-- **未來的 `install.sh`**（哪天真寫出來）絕不會 hard-code 憑證 — 所有 token 走 env var（如 pm-sync 用 `AZURE_DEVOPS_EXT_PAT`，永不上 argv）。
-- **找到真正的資安問題？** 到對應子 repo 開 GitHub issue（PAT 流程問題去 pm-sync、hook bug 去 ai_skills）。這個 meta-repo 本身沒東西會觸發 CVE。
+- **姐妹 repo**（[kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills)、`kc_pm_kit`、`kc_claude_memory`）各自有自己的 Security Notice 講 PAT 怎麼存、hook 做什麼、測試 fixture 的去敏規範等。把任何一塊接進你真實工作流前先看那幾份。
+- **未來的 `install.sh`**（哪天真寫出來）絕不會 hard-code 憑證 — 所有 token 走 env var（如 prd-breakdown 用 `AZURE_DEVOPS_EXT_PAT`，永不上 argv）。
+- **找到真正的資安問題？** 到對應子 repo 開 GitHub issue（PAT 流程問題去 kc_pm_kit、hook bug 去 ai_skills）。這個 meta-repo 本身沒東西會觸發 CVE。
 
 ## License
 

@@ -18,7 +18,7 @@ This repo is the **connective tissue** — docs, credits, and (eventually) an in
 | [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) | separate repo (public) | 12+ skills (`/spec`, `/memory-lint`, `/repo-scan`, `/skill-cron`, ...) plus 4 safety hooks. The part that actually runs. |
 | kc_claude_memory | separate repo (private) | Where Claude keeps notes about me. Also holds `ref/` files — 12 agent system prompts borrowed from NYCU, loaded on demand. |
 | [NYCU-Chung/my-claude-devteam](https://github.com/NYCU-Chung/my-claude-devteam) | upstream | Where those agent prompts came from. MIT, credited in CREDITS.md. |
-| [kc_pm_sync](https://github.com/KerberosClaw/kc_pm_sync) | separate repo (public, v1.0.1 stable) | Pure prompt-driven Claude Code skill: PRD markdown → Azure DevOps work items. Workflow A breaks PRD into vertical slices via quiz-user; Workflow B pushes to ADO with parent / Predecessor / assignee + idempotent fingerprint markers. |
+| [kc_pm_kit](https://github.com/KerberosClaw/kc_pm_kit) | separate repo (public) | Two prompt-driven Claude Code skills that chain: `prd-create` (raw input → PRD draft → ADO Wiki, v0.1 mvp) + `prd-breakdown` (PRD → vertical slices → ADO work items with parent / Predecessor / assignee + idempotent fingerprint markers, v1.1 stable). |
 
 ## Why "harness"?
 
@@ -58,7 +58,7 @@ When `install.sh` exists, it'll:
 - Seed `~/.claude/branch-protection-skip.txt` (so the hook doesn't block you on your own solo repos)
 - Bootstrap `~/dev/kc_claude_memory/` with a minimal MEMORY.md
 
-That's the plan. pm-sync v1.0 shipped (2026-04); install.sh is next.
+That's the plan. prd-breakdown v1.1 shipped (2026-04); install.sh is next.
 
 ## Status
 
@@ -67,9 +67,8 @@ That's the plan. pm-sync v1.0 shipped (2026-04); install.sh is next.
 What's working vs what isn't:
 - ✅ The pieces in [kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills) (skills + hooks) are real and I use them daily
 - ✅ The `ref/`-based progressive disclosure pattern is in daily use
-- ✅ `kc_pm_sync` v1.0.1 stable — PRD breakdown + ADO push working in production
-- 🚧 `/prd-create` skill (spec/design → PRD markdown) — planned, not started yet
-- 🚧 `/pm-sync daily` workflow (snapshot diff for standup) — planned
+- ✅ `kc_pm_kit` ships two skills: `/prd-breakdown` v1.1 stable (PRD → ADO work items) and `/prd-create` v0.1 mvp (raw input → PRD draft → ADO Wiki) — both in production use
+- 🚧 `/prd-breakdown daily` workflow (snapshot diff for standup) — planned
 - ❌ `install.sh` doesn't exist. If you want to replicate this, you're copy-pasting by hand for now.
 
 In other words: read the manifesto, steal whatever ideas help, but don't expect a turnkey setup yet.
@@ -79,9 +78,9 @@ In other words: read the manifesto, steal whatever ideas help, but don't expect 
 ## Security Notice
 
 - **This repo is documentation + metadata only.** No executable code, no secrets, no credentials. Clone it, fork it, read it — nothing sensitive transfers.
-- **The sibling repos** ([kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills), `kc_pm_sync`, `kc_claude_memory`) each have their own Security Notice covering PAT storage, hook behaviour, sanitization rules for test fixtures, etc. Read those before wiring anything into a real workflow.
-- **Future `install.sh`** (when it exists) will never hard-code credentials — all tokens go through env vars (e.g. pm-sync uses `AZURE_DEVOPS_EXT_PAT`, never on argv).
-- **Found a real security issue?** Open a GitHub issue on the relevant sub-repo (pm-sync for PAT flow, ai_skills for hook bugs, etc.). Nothing in this meta-repo itself should ever warrant a CVE.
+- **The sibling repos** ([kc_ai_skills](https://github.com/KerberosClaw/kc_ai_skills), `kc_pm_kit`, `kc_claude_memory`) each have their own Security Notice covering PAT storage, hook behaviour, sanitization rules for test fixtures, etc. Read those before wiring anything into a real workflow.
+- **Future `install.sh`** (when it exists) will never hard-code credentials — all tokens go through env vars (e.g. prd-breakdown uses `AZURE_DEVOPS_EXT_PAT`, never on argv).
+- **Found a real security issue?** Open a GitHub issue on the relevant sub-repo (prd-breakdown for PAT flow, ai_skills for hook bugs, etc.). Nothing in this meta-repo itself should ever warrant a CVE.
 
 ## License
 

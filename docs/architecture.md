@@ -18,13 +18,13 @@ Placeholder for the full architecture write-up. Will cover:
     ↓
 [/spec skill]      Discovery → 產 docs/DESIGN.md / spec.md / plan.md
     ↓
-[/prd-create]      （未實作）spec/design 收斂成 PRD markdown
+[/prd-create]      raw input / spec / design → PRD markdown（quiz-user → draft → sanitize → ADO Wiki）
     ↓
-[/pm-sync] A       PRD → vertical slice plan.md（quiz user / wave / blocked_by）
+[/prd-breakdown] A       PRD → vertical slice plan.md（quiz user / wave / blocked_by）
     ↓
-[/pm-sync] B       Push slices to ADO（parent / Predecessor / assignee + fingerprint idempotent）
+[/prd-breakdown] B       Push slices to ADO（parent / Predecessor / assignee + fingerprint idempotent）
     ↓
-[/pm-sync daily]   （未實作）snapshot diff → standup-friendly format
+[/prd-breakdown daily]   （未實作）snapshot diff → standup-friendly format
     ↓
 [skill-cron]       排 daily 9am 跑 standup → Telegram
 ```
@@ -33,21 +33,21 @@ Placeholder for the full architecture write-up. Will cover:
 
 | Layer | 已有 | 缺 |
 |---|---|---|
-| `/spec` Discovery + Spec + Implement + Check + Report | ✅ kc_ai_skills 內完整 | 結尾沒「觸發 prd-create / pm-sync」hook |
-| `/prd-create`（spec/design → PRD markdown） | ❌ 還沒寫 | 整個 skill 待寫；可參考 `vibe-grimoire/create-prd` 內化 |
-| `/pm-sync` Workflow A（PRD → slice plan） | ✅ v1.0.1 stable | — |
-| `/pm-sync` Workflow B（push to ADO） | ✅ v1.0.1 stable，含 Step B0 production-confirm gate | — |
-| `/pm-sync daily`（snapshot diff for standup） | ❌ | stateful；caller 維護 `~/.pm-sync.snapshots/<date>.json`，Claude 對話內讀寫 |
+| `/spec` Discovery + Spec + Implement + Check + Report | ✅ kc_ai_skills 內完整 | 結尾沒「觸發 prd-create / prd-breakdown」hook |
+| `/prd-create`（raw input → PRD draft → ADO Wiki） | ✅ v0.1 mvp，kc_pm_kit 內 | rough edges（剛 ship），stakeholder review diff helper / ADR generator 待做 |
+| `/prd-breakdown` Workflow A（PRD → slice plan） | ✅ v1.1 stable | — |
+| `/prd-breakdown` Workflow B（push to ADO） | ✅ v1.1 stable，含 Step B0 production-confirm gate | — |
+| `/prd-breakdown daily`（snapshot diff for standup） | ❌ | stateful；caller 維護 `~/.prd-breakdown.snapshots/<date>.json`，Claude 對話內讀寫 |
 | Multi-platform（GitHub / Jira / Redmine / 禪道） | ❌ | 各寫獨立 SKILL section（不抽 abstraction） |
 | Cross-skill orchestration（一鍵跑全 pipeline） | ❌ | harness 自己的 install + 串接 prompt |
-| `skill-cron` 排定 `/pm-sync daily` Telegram | ⚠️ skill-cron 在 kc_ai_skills，但 daily 還沒做 | 等 daily 出來才能接 |
+| `skill-cron` 排定 `/prd-breakdown daily` Telegram | ⚠️ skill-cron 在 kc_ai_skills，但 daily 還沒做 | 等 daily 出來才能接 |
 
 ### harness 層要做的事
 
 跟 sub-repo 各自的 feature work 分開——harness 負責「串接 + 規範」，不負責實作 skill 本身。
 
 - [ ] **`docs/DIGITAL_PM_WORKFLOW.md`** — 完整 workflow 文件，含時序圖、錯誤路徑、人工介入點
-- [ ] **Cross-skill orchestrator** — 一鍵串：`/spec` → `/prd-create` → `/pm-sync` A → B → `skill-cron`。可能是 install 進 `~/.claude/skills/` 的 meta-skill，也可能就是一份引導 prompt
+- [ ] **Cross-skill orchestrator** — 一鍵串：`/spec` → `/prd-create` → `/prd-breakdown` A → B → `skill-cron`。可能是 install 進 `~/.claude/skills/` 的 meta-skill，也可能就是一份引導 prompt
 - [ ] **install.sh** — clone sub-repos、symlink skills/hooks、bootstrap memory、初始化 branch-protection-skip
 - [ ] **memory 紀錄** — 當前活躍 spec / push session / sprint context（中斷後續跑時有 context）
 
@@ -55,8 +55,8 @@ Placeholder for the full architecture write-up. Will cover:
 
 | Repo | 待做 |
 |---|---|
-| `kc_pm_sync` | `/pm-sync daily` workflow（stateful snapshot diff）+ multi-platform expansion（GitHub / Jira / Redmine / 禪道）|
-| `kc_ai_skills` | `/prd-create` skill（spec/design → PRD markdown）+ `/spec report` 結尾選擇性 hook 觸發下游 |
+| `kc_pm_kit` | `/prd-breakdown daily` workflow（stateful snapshot diff）+ multi-platform expansion（GitHub / Jira / Redmine / 禪道）+ `/prd-create` v0.2（stakeholder review diff helper / ADR generator） |
+| `kc_ai_skills` | `/spec report` 結尾選擇性 hook 觸發下游（`/prd-create` 或 `/prd-breakdown`） |
 
 ### 時程
 
