@@ -152,6 +152,20 @@ ChatgptException - Unknown items in responses API response: []
 
 Claude Code 每一輪都送系統提示，所以這條是硬阻塞。繞法是掛一個 pre-call hook 在送出前改寫：
 
+⚠️ **搬去哪很重要，這裡我第一次做錯了。** 把 system 折進第一則使用者訊息確實能讓請求通過，但那等於**把系統層指令降級成對話內容**——實際後果是專案的 `CLAUDE.md` 形同被無視（問它專案規範裡寫死的數字，它答不出來）。
+
+正解是搬進 **`instructions`**。那是 Responses API 放系統層指令的正規欄位，而且在 chatgpt 轉接層的 `allowed_keys` 裡，會自動跟 Codex 的基礎指令合併：
+
+```python
+base_instructions = get_chatgpt_default_instructions()
+existing_instructions = request.get("instructions")
+if existing_instructions:
+    if base_instructions not in existing_instructions:
+        request["instructions"] = f"{base_instructions}\n\n{existing_instructions}"
+```
+
+改成塞 `instructions` 之後，同一題（問專案規範裡的數字）直接答對、而且沒去讀任何檔案。
+
 ```python
 from litellm.integrations.custom_logger import CustomLogger
 
@@ -172,6 +186,36 @@ proxy_handler_instance = FoldSystemIntoUser()
 ⚠️ **兩種形狀都要處理**。只處理 `messages` 裡的 system role 是不夠的 —— Claude Code 走 `/v1/messages`，那條路的 system 是**頂層獨立欄位**，補了才會生效。
 
 代價是語意降級：系統提示變成對話內容，模型不會把它當系統層指令看待。要真正對等就得改 LiteLLM 原始碼、讓它折進 `instructions`。
+
+### 三、工具結果裡的圖片會被靜默丟掉，然後模型開始編
+
+這條最危險。同一張圖：
+
+| 圖片放在哪 | 結果 |
+|---|---|
+| 使用者訊息裡 | 正確辨識 |
+| **工具結果裡**（`tool_result` 包 `image` 區塊） | **圖被丟掉，模型捏造一個答案** |
+
+實測拿一張寫著 `BANANA 7788` 的圖，經工具結果送過去，模型回「圖片裡的文字是：Hello, World!」。它不會說自己沒看到圖。
+
+這正是檔案讀取工具回傳圖片走的路徑，所以「叫它看一張圖」會壞。表面症狀可能是它繞去呼叫 OCR 指令——那其實是比較好的結果，壞的情況是它一本正經地瞎掰。
+
+**靜默捏造比報錯危險得多**，所以這條一定要處理。同一個 pre-call hook 裡把圖片從工具結果撈出來、改附成後面一則使用者訊息（那個位置的圖確定送得到模型眼前），原位置留一句文字說明。改完同一題正確答出 `BANANA7788`。
+
+### 推理強度：綁在模型上，不要靠介面的強度選單
+
+介面自己的強度選單是 Claude 專屬的，送到這個後端沒有意義。改成**在閘道設定裡把強度綁在模型條目上**，切換強度＝切換模型：
+
+```yaml
+  - model_name: gpt-sol-max
+    model_info:
+      mode: responses
+    litellm_params:
+      model: chatgpt/gpt-5.6-sol
+      reasoning_effort: max
+```
+
+實測 `none` / `low` / `medium` / `high` / `xhigh` / `max` 六個值都通得過（`minimal` 會被閘道自己擋下）。再把模型別名對到強度階梯，介面上的模型選單就變得有意義——挑「最強那個別名」＝最高強度，挑「最快那個別名」＝低強度加快模型。
 
 ### 順帶：`/v1/messages` 打的是 `/responses`
 
