@@ -39,7 +39,8 @@ kc_claude_harness/
 ├── CREDITS.md        — who to credit / who to blame
 ├── LICENSE           — MIT
 └── docs/
-    └── architecture.md   — the deep-dive (TODO, still skeletal)
+    ├── architecture.md     — the deep-dive (TODO, still skeletal)
+    └── model-backends.md   — running Claude Code on a non-Claude model, and why that Cloudflare 403 happens
 ```
 
 Zero executables. All the working code lives in the other four repos.

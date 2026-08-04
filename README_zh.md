@@ -39,7 +39,8 @@ kc_claude_harness/
 ├── CREDITS.md        — 該謝誰 / 該怪誰
 ├── LICENSE           — MIT
 └── docs/
-    └── architecture.md   — 深入解說（TODO，骨架都還沒長肉）
+    ├── architecture.md     — 深入解說（TODO，骨架都還沒長肉）
+    └── model-backends.md   — 讓 Claude Code 跑在別家模型上，以及那個 Cloudflare 403 到底是什麼
 ```
 
 零執行檔。真的在動的 code 都在另外那 4 個 repo 裡。
