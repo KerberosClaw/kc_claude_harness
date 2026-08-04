@@ -2,7 +2,9 @@
 
 **查這個的動機**：Codex CLI 用不慣，但想用手上的 ChatGPT 訂閱額度。目標是開一個獨立的 Claude Code 設定目錄（`CLAUDE_CONFIG_DIR`）指向別的後端，介面維持 Claude Code、模型換成 GPT。
 
-**先講清楚一件事**：這樣開出來的**不是第四個 Anthropic 帳號**。它是第四個設定目錄，後端根本不是 Anthropic，不吃 Anthropic 額度、也不需要 Anthropic 登入 —— `ANTHROPIC_AUTH_TOKEN` 只是中介自己的金鑰。吃的是 ChatGPT 訂閱額度。
+**先講清楚一件事**：這樣開出來的**不是多一個 Anthropic 帳號**。它只是多一個設定目錄（`CLAUDE_CONFIG_DIR` 指過去），後端根本不是 Anthropic —— 不吃 Anthropic 額度、也不需要 Anthropic 登入，`ANTHROPIC_AUTH_TOKEN` 只是本機中介自己的金鑰。實際消耗的是 ChatGPT 訂閱額度。
+
+所以它可以跟原本的設定並存，兩邊互不影響：原本那份照常連 Anthropic，這一份走訂閱端點。
 
 Anthropic 官方文件明講不支援透過閘道跑非 Claude 模型，所以兩邊任一升版都可能要重調。
 
