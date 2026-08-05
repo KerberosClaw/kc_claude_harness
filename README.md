@@ -40,7 +40,8 @@ kc_claude_harness/
 ├── LICENSE           — MIT
 └── docs/
     ├── architecture.md     — the deep-dive (TODO, still skeletal)
-    └── model-backends.md   — running Claude Code on a non-Claude model, and why that Cloudflare 403 happens
+    ├── model-backends.md   — running Claude Code on a non-Claude model, and why that Cloudflare 403 happens
+    └── multi-account.md    — running several subscription accounts side by side on one machine
 ```
 
 Zero executables. All the working code lives in the other four repos.
